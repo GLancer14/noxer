@@ -34,3 +34,34 @@
   }
 }
 
+@media (min-width: 425px) {
+  .categories {
+    .category {
+      .image {
+        width: 79px;
+        height: 79px;
+      }
+
+      .name {
+        width: 79px;
+
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+@media (min-width: 425px) {
+  .categories {
+    .category {
+      .image {
+        width: 115px;
+        height: 115px;
+      }
+
+      .name {
+        width: 115px;
+      }
+    }
+  }
+}

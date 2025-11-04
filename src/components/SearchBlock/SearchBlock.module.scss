@@ -4,6 +4,11 @@
   align-items: flex-start;
   width: 100%;
 
+  .noResults {
+    align-self: center;
+    margin-top: 10px;
+  }
+
   .header {
     padding-top: 15px;
     font-family: "Inter";
@@ -29,7 +34,7 @@
       flex-grow: 1;
       padding: 10px 10px 10px 0;
 
-      font-size: 15px;
+      font-size: 14px;
       text-align: left;
       text-transform: lowercase;
 

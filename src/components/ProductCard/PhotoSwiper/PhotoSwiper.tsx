@@ -11,6 +11,7 @@ export function PhotoSwiper({ productData }) {
     <div className={styles.imageWrp}>
       {(productData.images.length > 0) ? 
         <Swiper
+          className={styles.swiper}
           style={{
             "--swiper-pagination-color": "#292928",
             "--swiper-pagination-bullet-size": "3px",
@@ -18,28 +19,26 @@ export function PhotoSwiper({ productData }) {
             "--swiper-pagination-bullet-horizontal-gap": "2px",
             "--swiper-pagination-bullet-inactive-color": "rgba(29, 29, 28,     0.3)",
             "--swiper-pagination-bullet-active-color": "#292928",
-            width: "100%",
-            height: "calc((100vw - 14px) / 2)"
           }}
           initialSlide={0}
           pagination={{ clickable: true }}
-            modules={[ Pagination ]}
-          >
-            {productData.images.map((image, index) => {
-              return (
-                  <SwiperSlide key={index} style={{
-                    width: "100%",
-                    height: "100%"
-                  }}>
-                    <img
-                      className={styles.image}
-                      src={image?.Image_URL || noPhoto}
-                      alt={image?.title}
-                    />
-                  </SwiperSlide>
-                );
-              })}
-          </Swiper>
+          modules={[ Pagination ]}
+        >
+          {productData.images.map((image, index) => {
+            return (
+                <SwiperSlide key={index} style={{
+                  width: "100%",
+                  height: "100%"
+                }}>
+                  <img
+                    className={styles.image}
+                    src={image?.Image_URL || noPhoto}
+                    alt={image?.title}
+                  />
+                </SwiperSlide>
+              );
+          })}
+        </Swiper>
        : (
         <img
           className={styles.mockImage}

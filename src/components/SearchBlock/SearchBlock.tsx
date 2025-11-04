@@ -11,6 +11,7 @@ export function SearchBlock({ searchValue, categories, handleQuickSearchValueSel
 
   const findProducts = async (searchValue, prevPage, page) => {
     const loadedProducts = await searchProducts(searchValue, prevPage, page);
+    console.log(loadedProducts)
     setQuickSearchResult(loadedProducts);
   }
 
@@ -64,8 +65,8 @@ export function SearchBlock({ searchValue, categories, handleQuickSearchValueSel
     return (
       <div className={styles.wrapper}>
           {
-            (quickSearchResult === null || quickSearchResult.total === 0) ?
-              "Результаты не найдены" :
+            (quickSearchResult === null || quickSearchResult.data.total === 0) ?
+              <div className={styles.noResults}>Результаты не найдены</div> :
               quickSearchResult.data.products.map(product => {
                 return (
                   <div className={styles.cardSearch}>

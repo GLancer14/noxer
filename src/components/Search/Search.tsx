@@ -15,14 +15,17 @@ export function Search({
   return (
     <>
       <form className={styles.form}>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder="Найти товары"
-          onFocus={handleSearchUnfocus}
-          onInput={handleSearchInput}
-          value={searchValue}
-        />
+        <label className={styles.inputWrp}>
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="Найти товары"
+            onFocus={handleSearchUnfocus}
+            onInput={handleSearchInput}
+            value={searchValue}
+          />
+        </label>
+        
         {searchValue !== "" && (
           <button
             className={styles.goBtn}

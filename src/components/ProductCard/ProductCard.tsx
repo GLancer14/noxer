@@ -10,8 +10,11 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { PhotoSwiper } from "./PhotoSwiper/PhotoSwiper";
+import { useState } from "react";
 
 export function ProductCard({ productData }) {
+  const [ favorite, setFavorite ] = useState(false);
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -25,15 +28,18 @@ export function ProductCard({ productData }) {
                   color: "white"
                 }}
               >
-                {mark.Mark_Name}
+                {marksData[mark.Mark_Name]?.visibleName || mark.Mark_Name}
               </span>
             );
           })}
         </div>
         <img
           className={styles.favorite}
-          src={heartOn}
+          src={favorite ? heartOn : heartOff}
           alt="Избранное"
+          onClick={() => {
+            setFavorite(!favorite);
+          }}
         />
       </div>
       <PhotoSwiper productData={productData} />

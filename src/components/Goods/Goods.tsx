@@ -50,9 +50,9 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
   //   setLoading(false);
   // }
 
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   // useEffect(() => {
   //   const observer = new IntersectionObserver(entries => {
