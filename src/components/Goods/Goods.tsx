@@ -14,6 +14,8 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
     if (totalPages < page) {
       return;
     }
+
+    console.log(page)
     
     setLoading(true);
     let loadedProducts;
@@ -23,35 +25,54 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
       loadedProducts = await getProducts(6, page);
     }
 
-    console.log(page)
+    setPage(previosPage => previosPage + 1);
     setTotalPages(loadedProducts.data.pagination.total_pages);
     setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.data.products ]);
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchProducts();
-  }, [ page ]);
+  // const fetchProducts = async () => {
+  //   if (totalPages < page) {
+  //     return;
+  //   }
+    
+  //   setLoading(true);
+  //   let loadedProducts;
+  //   if (searchValue !== "") {
+  //     loadedProducts = await searchProducts(searchValue, 10, page);
+  //   } else {
+  //     loadedProducts = await getProducts(6, page);
+  //   }
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-        const target = entries[0];
-        if (target.isIntersecting && !loading) {
-          setPage(prevPage => prevPage + 1);
-        }
-      }, { threshold: 1 }
-    );
+  //   console.log(page)
+  //   setTotalPages(loadedProducts.data.pagination.total_pages);
+  //   setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.data.products ]);
+  //   setLoading(false);
+  // }
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
 
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    }
-  }, [ loading ]);
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(entries => {
+  //       const target = entries[0];
+  //       if (target.isIntersecting && !loading) {
+  //         setPage(prevPage => prevPage + 1);
+  //       }
+  //     }, { threshold: 1 }
+  //   );
+
+  //   if (loaderRef.current) {
+  //     observer.observe(loaderRef.current);
+  //   }
+
+  //   return () => {
+  //     if (loaderRef.current) {
+  //       observer.unobserve(loaderRef.current);
+  //     }
+  //   }
+  // }, [ loading ]);
 
   return (
     <>
@@ -61,9 +82,37 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
             <ProductCard productData={visibleProduct} />
           );
         })}
+        {/* <div className={styles.loading} ref={loaderRef}>
+          {loading && "Загрузка..."}
+        </div> */}
+        {loading ?
+          (<div className={styles.loading} ref={loaderRef}>
+            {loading && "Загрузка..."}
+          </div>) : 
+          (<div className={styles.more}>
+            <button
+              className={styles.btn}
+              onClick={() => {
+                fetchProducts();
+              }}
+            >
+              Показать ещё
+            </button>
+          </div>)
+        }
+        {/* <div className={styles.more}>
+          <button
+            className={styles.btn}
+            onClick={() => {
+              fetchProducts();
+            }}
+          >
+            Показать ещё
+          </button>
+        </div>
         <div className={styles.loading} ref={loaderRef}>
           {loading && "Загрузка..."}
-        </div>
+        </div> */}
       </div>
     </>
   );

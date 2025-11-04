@@ -35,7 +35,6 @@ export function Search({
             Перейти
           </button>
         )}
-        
       </form>
     </>
   );
