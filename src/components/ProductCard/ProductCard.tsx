@@ -9,6 +9,7 @@ import { Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import { PhotoSwiper } from "./PhotoSwiper/PhotoSwiper";
 
 export function ProductCard({ productData }) {
   return (
@@ -35,46 +36,7 @@ export function ProductCard({ productData }) {
           alt="Избранное"
         />
       </div>
-      <div className={styles.imageWrp}>
-          <Swiper
-            style={{
-              "--swiper-pagination-color": "#292928",
-              "--swiper-pagination-bullet-size": "3px",
-              "--swiper-pagination-bullet-width": "3px",
-              "--swiper-pagination-bullet-horizontal-gap": "2px",
-              "--swiper-pagination-bullet-inactive-color": "rgba(29, 29, 28,     0.3)",
-              "--swiper-pagination-bullet-active-color": "#292928",
-              width: "100%",
-              height: "calc((100vw - 14px) / 2)"
-            }}
-            initialSlide={0}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[ Pagination ]}
-          >
-            {(productData.images.length > 0) ? productData.images.map((image, index) => {
-              return (
-                <SwiperSlide key={index} style={{
-                  width: "100%",
-                  height: "100%"
-                }}>
-                  <img
-                    className={styles.image}
-                    src={image?.Image_URL || noPhoto}
-                    alt={image?.title}
-                  />
-                </SwiperSlide>
-              );
-            }) : (<img
-                    className={styles.mockImage}
-                    src={noPhoto}
-                    alt="Нет фото"
-                  />)
-          }
-          </Swiper>
-      </div>
-      
+      <PhotoSwiper productData={productData} />
       <div className={styles.description}>
         <div className={styles.priceWrp}>
           <span className={styles.price}>{productData.price} &#8381;</span>
@@ -90,7 +52,6 @@ export function ProductCard({ productData }) {
           </span>
         </div>
         <div className={styles.name}>{productData.name}</div>
-        
       </div>
       <button className={styles.chooseBtn}>Выбрать</button>
     </div>
