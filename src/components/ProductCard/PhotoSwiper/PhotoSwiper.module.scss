@@ -29,14 +29,12 @@
 }
 
 @media (min-width: 600px) {
-.imageWrp {
-  height: calc((100vw - 14px) / 3);
-  
-  .swiper {
-    width: 100%;
-    height: calc((100vw - 14px) / 3);
-  }
-}
+  .imageWrp {
+    height: calc((600px - 14px) / 3);
 
-  
+    .swiper {
+      width: 100%;
+      height: calc((600px - 14px) / 3);
+    }
+  }
 }

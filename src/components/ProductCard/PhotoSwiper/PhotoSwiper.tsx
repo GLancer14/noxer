@@ -5,8 +5,9 @@ import styles from "./PhotoSwiper.module.scss";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import type Product from "../../../types/Product";
 
-export function PhotoSwiper({ productData }) {
+export function PhotoSwiper({ productData }: { productData: Product }) {
   return (
     <div className={styles.imageWrp}>
       {(productData.images.length > 0) ? 

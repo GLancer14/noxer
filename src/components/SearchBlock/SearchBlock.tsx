@@ -2,16 +2,26 @@ import styles from "./SearchBlock.module.scss";
 import magnifier from "../../assets/icons/magnifier.svg";
 import noPhoto from "../../assets/no-photo.svg";
 import { useEffect, useState } from "react";
-import { getProducts } from "../../api/getProducts";
 import { searchProducts } from "../../api/searchProducts";
+import type Category from "../../types/Category";
+import type { AxiosResponse } from "axios";
 
-export function SearchBlock({ searchValue, categories, handleQuickSearchValueSelect }) {
-  const [ frequentRequests, setFrequentRequests ] = useState([]);
+interface SearchBlockProps {
+  searchValue: string;
+  categories: Category[];
+  handleQuickSearchValueSelect: (query: string) => void;
+}
+
+export function SearchBlock({
+  searchValue,
+  categories,
+  handleQuickSearchValueSelect
+}: SearchBlockProps) {
+  const [ frequentRequests, setFrequentRequests ] = useState<Category[]>([]);
   const [ quickSearchResult, setQuickSearchResult ] = useState(null);
 
-  const findProducts = async (searchValue, prevPage, page) => {
+  const findProducts = async (searchValue: string, prevPage: number, page: number) => {
     const loadedProducts = await searchProducts(searchValue, prevPage, page);
-    console.log(loadedProducts)
     setQuickSearchResult(loadedProducts);
   }
 
@@ -49,6 +59,7 @@ export function SearchBlock({ searchValue, categories, handleQuickSearchValueSel
               onClick={() => {
                 handleQuickSearchValueSelect(category.Category_Name);
               }}
+              key={category.Category_ID}
             >
               <img className={styles.searchIcon} src={magnifier} alt="icon" />
               <span className={styles.requestName}>
@@ -60,56 +71,54 @@ export function SearchBlock({ searchValue, categories, handleQuickSearchValueSel
       </div>
     );
   } else {
-    
-
     return (
       <div className={styles.wrapper}>
-          {
-            (quickSearchResult === null || quickSearchResult.data.total === 0) ?
-              <div className={styles.noResults}>Результаты не найдены</div> :
-              quickSearchResult.data.products.map(product => {
-                return (
-                  <div className={styles.cardSearch}>
-                    <div className={styles.imageWrp}>
-                      {(product.images.length > 0) ? 
-                        (
-                          <img
-                            className={styles.image}
-                            src={
-                              product?.images.find(image => image.MainImage).Image_URL || noPhoto
-                            }
-                            alt={product?.title}
-                          />
-                        ) : (
-                          <img
-                            className={styles.mockImage}
-                            src={noPhoto}
-                            alt="Нет фото"
-                          />
-                      )}
-                    </div>
-                      
-                    <div className={styles.description}>
-                      <div className={styles.name}>{product.name}</div>
-                      <div className={styles.priceWrp}>
-                        <span className={styles.price}>{product.price} &#8381;</span>
-                        <span className={styles.oldPrice}>
-                          {product.old_price ? `${product.old_price} \u20bd` : ""}
-                        </span>
-                        <span className={styles.discountPercent}>
-                          {
-                            product.old_price ?
-                              `-${100 - Math.round(100 * product.price / product.old_price)}%` :
-                              ""
+        {
+          (quickSearchResult === null || quickSearchResult?.data.total === 0) ?
+            <div className={styles.noResults}>Результаты не найдены</div> :
+            quickSearchResult.data.products.map(product => {
+              return (
+                <div className={styles.cardSearch} key={product.id}>
+                  <div className={styles.imageWrp}>
+                    {(product.images.length > 0) ? 
+                      (
+                        <img
+                          className={styles.image}
+                          src={
+                            product?.images.find(image => image.MainImage).Image_URL || noPhoto
                           }
-                        </span>
-                      </div>
+                          alt={product?.title}
+                        />
+                      ) : (
+                        <img
+                          className={styles.mockImage}
+                          src={noPhoto}
+                          alt="Нет фото"
+                        />
+                      )
+                    }
+                  </div>
+                  <div className={styles.description}>
+                    <div className={styles.name}>{product.name}</div>
+                    <div className={styles.priceWrp}>
+                      <span className={styles.price}>{product.price} &#8381;</span>
+                      <span className={styles.oldPrice}>
+                        {product.old_price ? `${product.old_price} \u20bd` : ""}
+                      </span>
+                      <span className={styles.discountPercent}>
+                        {
+                          product.old_price ?
+                            `-${100 - Math.round(100 * product.price / product.old_price)}%` :
+                            ""
+                        }
+                      </span>
                     </div>
                   </div>
-                );
-              })
-          }
-        </div>
+                </div>
+              );
+            })
+        }
+      </div>
     );
   }
 }

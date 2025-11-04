@@ -21,7 +21,6 @@ export const searchProducts = async (searchValue: string, perPage: number = 20, 
       }
     }
 
-    console.log(e)
     return { status: "error" };
   }
 };

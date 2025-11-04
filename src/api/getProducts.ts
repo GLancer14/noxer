@@ -11,11 +11,6 @@ export const getProducts = async (perPage: number, page: number) => {
           page,
         },
     });
-
-    // console.log(import.meta.env.VITE_POST_REQUEST)
-    // return await connection.get(import.meta.env.VITE_POST_REQUEST, 
-    //   {},
-    // );
   } catch(e) {
     if (request.isAxiosError(e)) {
       if (e.response?.status === 404) {

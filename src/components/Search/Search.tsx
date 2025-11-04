@@ -1,16 +1,23 @@
-import { useState } from "react";
-import { getProducts } from "../../api/getProducts";
+import type Product from "../../types/Product";
 import styles from "./Search.module.scss";
 
+interface SearchProps {
+  searchFocused: boolean,
+  searchValue: string,
+  handleSearchInput: () => void,
+  handleSearchUnfocus: () => void,
+  setSearchFocused: React.Dispatch<React.SetStateAction<boolean>>,
+  setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>
+}
+
 export function Search({
+  searchFocused,
   searchValue,
-  setSearchValue,
   handleSearchInput,
   handleSearchUnfocus,
-  quickSearchValue,
   setSearchFocused,
   setVisibleProducts
-}) {
+}: SearchProps) {
 
   return (
     <>
@@ -26,7 +33,7 @@ export function Search({
           />
         </label>
         
-        {searchValue !== "" && (
+        {(searchValue !== "" && !searchFocused) && (
           <button
             className={styles.goBtn}
             onClick={() => {

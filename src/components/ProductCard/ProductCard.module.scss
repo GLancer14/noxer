@@ -3,7 +3,6 @@
 
   display: flex;
   flex-direction: column;
-
   width: calc(50% - 3px);
   padding: 2px;
 
@@ -62,13 +61,10 @@
       justify-content: flex-start;
       align-items: center;
       gap: 5px;
-      
-      
 
       .price {
         font-size: 16px;
         font-weight: bold;
-
         white-space: nowrap;
         text-overflow: ellipsis;
 

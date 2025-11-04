@@ -1,25 +1,22 @@
-import noPhoto from "../../assets/no-photo.svg";
+import { useState } from "react";
 import heartOn from "../../assets/icons/heart/heart-on.svg"
 import heartOff from "../../assets/icons/heart/heart-off.svg"
 import marksData from "../../constants/marks";
 import styles from "./ProductCard.module.scss";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import { PhotoSwiper } from "./PhotoSwiper/PhotoSwiper";
-import { useState } from "react";
+import type Product from "../../types/Product";
 
-export function ProductCard({ productData }) {
+export function ProductCard({ productData }: {productData: Product}) {
   const [ favorite, setFavorite ] = useState(false);
 
   return (
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.marks}>
-          {productData.marks.map(mark => {
+          {productData.marks.map((mark, index) => {
             return (
               <span
                 className={styles.mark}
@@ -27,6 +24,7 @@ export function ProductCard({ productData }) {
                   backgroundColor: mark.color_code,
                   color: "white"
                 }}
+                key={index}
               >
                 {marksData[mark.Mark_Name]?.visibleName || mark.Mark_Name}
               </span>

@@ -3,8 +3,15 @@ import { getProducts } from "../../api/getProducts";
 import { ProductCard } from "../ProductCard/ProductCard";
 import styles from "./Goods.module.scss";
 import { searchProducts } from "../../api/searchProducts";
+import type Product from "../../types/Product";
 
-export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
+interface GoodsProps {
+  searchValue: string;
+  visibleProducts: Product[];
+  setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+}
+
+export function Goods({ searchValue, visibleProducts, setVisibleProducts }: GoodsProps) {
   const [ loading, setLoading ] = useState(false);
   const [ page, setPage ] = useState(1);
   const [ totalPages, setTotalPages ] = useState(1);
@@ -15,8 +22,6 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
       return;
     }
 
-    console.log(page)
-    
     setLoading(true);
     let loadedProducts;
     if (searchValue !== "") {
@@ -31,60 +36,18 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
     setLoading(false);
   }
 
-  // const fetchProducts = async () => {
-  //   if (totalPages < page) {
-  //     return;
-  //   }
-    
-  //   setLoading(true);
-  //   let loadedProducts;
-  //   if (searchValue !== "") {
-  //     loadedProducts = await searchProducts(searchValue, 10, page);
-  //   } else {
-  //     loadedProducts = await getProducts(6, page);
-  //   }
-
-  //   console.log(page)
-  //   setTotalPages(loadedProducts.data.pagination.total_pages);
-  //   setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.data.products ]);
-  //   setLoading(false);
-  // }
-
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(entries => {
-  //       const target = entries[0];
-  //       if (target.isIntersecting && !loading) {
-  //         setPage(prevPage => prevPage + 1);
-  //       }
-  //     }, { threshold: 1 }
-  //   );
-
-  //   if (loaderRef.current) {
-  //     observer.observe(loaderRef.current);
-  //   }
-
-  //   return () => {
-  //     if (loaderRef.current) {
-  //       observer.unobserve(loaderRef.current);
-  //     }
-  //   }
-  // }, [ loading ]);
-
   return (
     <>
       <div className={styles.list}>
-        {visibleProducts.map(visibleProduct => {
+        {visibleProducts.map((visibleProduct, index) => {
           return (
-            <ProductCard productData={visibleProduct} />
+            <ProductCard key={visibleProduct.id} productData={visibleProduct} />
           );
         })}
-        {/* <div className={styles.loading} ref={loaderRef}>
-          {loading && "Загрузка..."}
-        </div> */}
         {loading ?
           (<div className={styles.loading} ref={loaderRef}>
             {loading && "Загрузка..."}
@@ -100,19 +63,6 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts}) {
             </button>
           </div>)
         }
-        {/* <div className={styles.more}>
-          <button
-            className={styles.btn}
-            onClick={() => {
-              fetchProducts();
-            }}
-          >
-            Показать ещё
-          </button>
-        </div>
-        <div className={styles.loading} ref={loaderRef}>
-          {loading && "Загрузка..."}
-        </div> */}
       </div>
     </>
   );

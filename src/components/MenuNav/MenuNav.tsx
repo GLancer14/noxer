@@ -1,6 +1,12 @@
 import styles from "./MenuNav.module.scss";
 
-export function MenuNav({ searchFocused, handleBackBtnClick, setVisibleProducts }: { searchFocused: boolean }) {
+interface MenuNavProps {
+  searchFocused: boolean;
+  handleBackBtnClick: () => void;
+  setVisibleProducts: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
+export function MenuNav({ searchFocused, handleBackBtnClick, setVisibleProducts }: MenuNavProps) {
   const closeBtn = <button className={styles.close}>Закрыть</button>;
   const backBtn = (
     <button

@@ -8,31 +8,33 @@ import { Promo } from './components/Promo/Promo'
 import { Goods } from './components/Goods/Goods'
 import { getProjectData } from './api/projectData'
 import { SearchBlock } from './components/SearchBlock/SearchBlock';
-import { Route, Routes, useNavigate } from 'react-router';
-import { Main } from './components/Main/Main';
+import type Product from './types/Product';
 
 function App() {
-  const navigate = useNavigate();
   const [ projectData, setProjectData ] = useState(null);
   const [ searchFocused, setSearchFocused ] = useState(true);
   const [ quickSearchValue, setQuickSearchValue ] = useState("");
   const [ searchValue, setSearchValue ] = useState("");
-  const [ visibleProducts, setVisibleProducts ] = useState([]);
+  const [ visibleProducts, setVisibleProducts ] = useState<Product[]>([]);
 
   useEffect(() => {
-    const getProjectDataAsync = async () => {
-      const projectDataFromRequest = await getProjectData();
-      setProjectData(projectDataFromRequest);
-    }
+    try {
+      const getProjectDataAsync = async () => {
+        const projectDataFromRequest = await getProjectData();
+        setProjectData(projectDataFromRequest);
+      }
 
-    getProjectDataAsync();
+      getProjectDataAsync();
+    } catch(e) {
+      throw new Error("Data request error");
+    }
   }, []);
 
   function handleSearchInput(e) {
     setSearchValue(e.target.value);
   }
 
-  function handleQuickSearchValueSelect(query) {
+  function handleQuickSearchValueSelect(query: string) {
     setSearchValue(query.toLowerCase());
   }
 
@@ -54,6 +56,7 @@ function App() {
         handleBackBtnClick={handleBackBtnClick}
       />
       <Search
+          searchFocused={searchFocused}
           setSearchFocused={setSearchFocused}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
@@ -63,25 +66,6 @@ function App() {
           setVisibleProducts={setVisibleProducts}
         />
       <main className="main">
-        
-        {/* <Routes>
-          <Route path="/" element={
-            <Main
-              projectData
-              searchValue
-              visibleProducts
-              setVisibleProducts
-            />
-          } />
-          <Route path="/search" element={
-              <SearchBlock
-              searchValue={searchValue}
-              categories={projectData.data.categories}
-              handleQuickSearchValueSelect= {handleQuickSearchValueSelect}
-            />
-            }
-          />
-        </Routes> */}
         {!searchFocused ?
           <SearchBlock
             searchValue={searchValue}
@@ -106,4 +90,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
