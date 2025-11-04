@@ -1,0 +1,23 @@
+.promo {
+  margin-top: 15px;
+  width: 100%;
+
+  border: 1px solid #f1f1f1;
+  border-radius: 20px;
+
+  object-fit: contain;
+}
+
+.close {
+  padding: 10px 14px;
+  width: 87px;
+  height: 30px;
+}
+
+.image {
+  width: 100%;
+
+  border-radius: 20px;
+
+  object-fit: cover;
+}

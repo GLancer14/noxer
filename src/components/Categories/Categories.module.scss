@@ -1,0 +1,35 @@
+.categories {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  .category {
+    display: flex;
+    flex-direction: column;
+
+    .image {
+      width: 66px;
+      height: 66px;
+
+      border-radius: 15px;
+
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .name {
+      width: 79px;
+
+      font-size: 12px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      overflow: hidden;
+    }
+  }
+}
+

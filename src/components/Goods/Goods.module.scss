@@ -1,0 +1,15 @@
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+
+  .loading {
+    vertical-align: top;
+    padding-top: 6px;
+    width: 100%;
+    height: 90px;
+  }
+}
+

@@ -1,0 +1,57 @@
+@use "./_fonts.scss";
+
+*, *::after, *::before {
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+:root {
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: black;
+  background-color: white;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  box-sizing: border-box;
+
+  width: 100%;
+  margin: 0 auto;
+  padding: 5px;
+  text-align: center;
+
+  background-color: #f1f1f1;
+}
+
+.main {
+  margin: 0 auto;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
