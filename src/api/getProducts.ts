@@ -3,7 +3,7 @@ import request from "axios";
 
 export const getProducts = async (perPage: number, page: number) => {
   try {
-    return await connection.post("https://noxer-test.ru/webapp/api/products/filter", 
+    return await connection.post("/webapp/api/products/filter", 
       {},
       {
         params: {

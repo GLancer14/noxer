@@ -15,54 +15,103 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts }: Good
   const [ loading, setLoading ] = useState(false);
   const [ page, setPage ] = useState(1);
   const [ totalPages, setTotalPages ] = useState(1);
-  const loaderRef = useRef(null);
+  const [ initialLoadDone, setInitialLoadDone ] = useState(false);
 
-  const fetchProducts = async () => {
-    if (totalPages < page) {
+  const fetchProducts = async (isInitialLoad = false) => {
+    if (loading) {
+      return;
+    }
+
+    if (!isInitialLoad && totalPages < page) {
       return;
     }
 
     setLoading(true);
     let loadedProducts;
+    const currentPage = isInitialLoad ? 1 : page;
     if (searchValue !== "") {
-      loadedProducts = await searchProducts(searchValue, 10, page);
+      loadedProducts = await searchProducts(searchValue, 10, currentPage);
     } else {
-      loadedProducts = await getProducts(6, page);
+      loadedProducts = await getProducts(6, currentPage);
     }
 
-    setPage(previosPage => previosPage + 1);
+    if (isInitialLoad) {
+      setVisibleProducts(loadedProducts.data.products);
+      setPage(2);
+    } else {
+      setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.data.products ]);
+      setPage(previosPage => previosPage + 1);
+    }
+
     setTotalPages(loadedProducts.data.pagination.total_pages);
-    setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.data.products ]);
     setLoading(false);
+
+    if (isInitialLoad) {
+      setInitialLoadDone(true);
+    }
   }
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (!initialLoadDone) {
+      fetchProducts(true);
+    }
+
+  }, [initialLoadDone]);
+
+  useEffect(() => {
+    setPage(1);
+    setTotalPages(1);
+    setInitialLoadDone(false);
+
+  }, [searchValue]);
+
+  const handleLoadMore = () => {
+    if (!loading && page <= totalPages) {
+      fetchProducts(false);
+    }
+  }; 
 
   return (
     <>
       <div className={styles.list}>
-        {visibleProducts.map((visibleProduct, index) => {
+        {visibleProducts.map((visibleProduct) => {
           return (
             <ProductCard key={visibleProduct.id} productData={visibleProduct} />
           );
         })}
         {loading ?
+          (<div className={styles.loading}>
+            Загрузка...
+          </div>) : 
+          (page <= totalPages && (<div className={styles.more}>
+            <button
+              className={styles.btn}
+              disabled={loading}
+              onClick={handleLoadMore}
+            >
+              Показать ещё
+            </button>
+          </div>))
+        }
+
+        {/* {loading ?
           (<div className={styles.loading} ref={loaderRef}>
             {loading && "Загрузка..."}
           </div>) : 
           (<div className={styles.more}>
             <button
               className={styles.btn}
+              disabled={loading}
               onClick={() => {
-                fetchProducts();
+                if (!loading) {
+                  fetchProducts();
+                }
               }}
             >
               Показать ещё
             </button>
           </div>)
-        }
+        } */}
       </div>
     </>
   );

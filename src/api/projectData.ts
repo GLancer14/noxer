@@ -3,7 +3,7 @@ import request from "axios";
 
 export const getProjectData = async () => {
   try {
-    return await connection.get("https://noxer-test.ru/webapp/api/products/on_main");
+    return await connection.get("/webapp/api/products/on_main");
   } catch(e) {
     if (request.isAxiosError(e)) {
       if (e.response?.status === 404) {

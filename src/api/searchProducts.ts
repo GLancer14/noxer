@@ -3,7 +3,7 @@ import request from "axios";
 
 export const searchProducts = async (searchValue: string, perPage: number = 20, page: number = 1) => {
   try {
-    return await connection.post("https://noxer-test.ru/webapp/api/products/filter", 
+    const products = await connection.post("/webapp/api/products/filter", 
       { search: searchValue },
       {
         params: {
@@ -12,6 +12,7 @@ export const searchProducts = async (searchValue: string, perPage: number = 20, 
         }
       },
     );
+    return { ...products, status: "ok" };
   } catch(e) {
     if (request.isAxiosError(e)) {
       if (e.response?.status === 404) {
