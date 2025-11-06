@@ -13,7 +13,6 @@ import type Product from './types/Product';
 function App() {
   const [ projectData, setProjectData ] = useState(null);
   const [ searchFocused, setSearchFocused ] = useState(true);
-  const [ quickSearchValue, setQuickSearchValue ] = useState("");
   const [ searchValue, setSearchValue ] = useState("");
   const [ visibleProducts, setVisibleProducts ] = useState<Product[]>([]);
 
@@ -39,7 +38,6 @@ function App() {
   }
 
   function handleSearchUnfocus() {
-    // navigate("/search");
     setSearchFocused(false);
   }
 
@@ -62,7 +60,6 @@ function App() {
           setSearchValue={setSearchValue}
           handleSearchInput={handleSearchInput}
           handleSearchUnfocus={handleSearchUnfocus}
-          quickSearchValue={quickSearchValue}
           setVisibleProducts={setVisibleProducts}
         />
       <main className="main">

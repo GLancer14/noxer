@@ -1,9 +1,10 @@
+import type Product from "../../types/Product";
 import styles from "./MenuNav.module.scss";
 
 interface MenuNavProps {
   searchFocused: boolean;
   handleBackBtnClick: () => void;
-  setVisibleProducts: React.Dispatch<React.SetStateAction<any[]>>;
+  setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
 export function MenuNav({ searchFocused, handleBackBtnClick, setVisibleProducts }: MenuNavProps) {

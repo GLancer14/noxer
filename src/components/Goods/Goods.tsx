@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getProducts } from "../../api/getProducts";
 import { ProductCard } from "../ProductCard/ProductCard";
 import styles from "./Goods.module.scss";

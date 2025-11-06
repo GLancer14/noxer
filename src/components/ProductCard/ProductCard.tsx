@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 import { PhotoSwiper } from "./PhotoSwiper/PhotoSwiper";
 import type Product from "../../types/Product";
 
-export function ProductCard({ productData }: {productData: Product}) {
+export function ProductCard({ productData }: { productData: Product }) {
   const [ favorite, setFavorite ] = useState(false);
 
   return (

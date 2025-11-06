@@ -4,7 +4,6 @@ import noPhoto from "../../assets/no-photo.svg";
 import { useEffect, useState } from "react";
 import { searchProducts } from "../../api/searchProducts";
 import type Category from "../../types/Category";
-import type { AxiosResponse } from "axios";
 
 interface SearchBlockProps {
   searchValue: string;
