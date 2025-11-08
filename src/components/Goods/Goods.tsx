@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../../api/getProducts";
+// import { getProducts } from "../../api/getProducts";
 import { ProductCard } from "../ProductCard/ProductCard";
 import styles from "./Goods.module.scss";
 import { searchProducts } from "../../api/searchProducts";
@@ -27,24 +27,25 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts }: Good
     }
 
     setLoading(true);
-    let loadedProducts;
     const currentPage = isInitialLoad ? 1 : page;
-    if (searchValue !== "") {
-      loadedProducts = await searchProducts(searchValue, 10, currentPage);
-    } else {
-      loadedProducts = await getProducts(6, currentPage);
-    }
+    const loadedProducts = await searchProducts({
+      searchValue: searchValue,
+      perPage: 6,
+      page: currentPage,
+    });
 
-    if (isInitialLoad) {
-      setVisibleProducts(loadedProducts.data.products);
-      setPage(2);
-    } else {
-      setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.data.products ]);
-      setPage(previosPage => previosPage + 1);
-    }
+    if (loadedProducts.status === "ok") {
+      if (isInitialLoad) {
+        setVisibleProducts(loadedProducts.products);
+        setPage(2);
+      } else {
+        setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.products ]);
+        setPage(previosPage => previosPage + 1);
+      }
 
-    setTotalPages(loadedProducts.data.pagination.total_pages);
-    setLoading(false);
+      setTotalPages(loadedProducts.pagination.total_pages);
+      setLoading(false);
+    }
 
     if (isInitialLoad) {
       setInitialLoadDone(true);

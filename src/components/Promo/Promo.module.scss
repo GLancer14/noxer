@@ -4,6 +4,15 @@
 
   border: 1px solid #f1f1f1;
   border-radius: 20px;
+
+  .swiper {
+    --swiper-pagination-color: white;
+    --swiper-pagination-bullet-size: 3px;
+    --swiper-pagination-bullet-width: 3px;
+    --swiper-pagination-bullet-horizontal-gap: 2px;
+    --swiper-pagination-bullet-inactive-color: rgba(255, 255, 255, 0.3);
+    --swiper-pagination-bullet-active-color: white;
+  }
 }
 
 .close {

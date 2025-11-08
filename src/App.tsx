@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 import './assets/scss/index.scss';
 import { MenuNav } from './components/MenuNav/MenuNav'
 import { Footer } from './components/Footer/Footer'
@@ -9,9 +9,10 @@ import { Goods } from './components/Goods/Goods'
 import { getProjectData } from './api/projectData'
 import { SearchBlock } from './components/SearchBlock/SearchBlock';
 import type Product from './types/Product';
+import type { ProjectDataDTO } from './types/ProjectDataDTO';
 
 function App() {
-  const [ projectData, setProjectData ] = useState(null);
+  const [ projectData, setProjectData ] = useState<ProjectDataDTO | null>(null);
   const [ searchFocused, setSearchFocused ] = useState(true);
   const [ searchValue, setSearchValue ] = useState("");
   const [ visibleProducts, setVisibleProducts ] = useState<Product[]>([]);
@@ -20,7 +21,9 @@ function App() {
     try {
       const getProjectDataAsync = async () => {
         const projectDataFromRequest = await getProjectData();
-        setProjectData(projectDataFromRequest);
+        if (projectDataFromRequest.status === "ok") {
+          setProjectData(projectDataFromRequest);
+        }
       }
 
       getProjectDataAsync();
@@ -29,7 +32,7 @@ function App() {
     }
   }, []);
 
-  function handleSearchInput(e) {
+  function handleSearchInput(e: ChangeEvent<HTMLInputElement>) {
     setSearchValue(e.target.value);
   }
 
@@ -57,7 +60,6 @@ function App() {
           searchFocused={searchFocused}
           setSearchFocused={setSearchFocused}
           searchValue={searchValue}
-          setSearchValue={setSearchValue}
           handleSearchInput={handleSearchInput}
           handleSearchUnfocus={handleSearchUnfocus}
           setVisibleProducts={setVisibleProducts}
@@ -66,13 +68,13 @@ function App() {
         {!searchFocused ?
           <SearchBlock
             searchValue={searchValue}
-            categories={projectData.data.categories}
+            categories={projectData ? projectData.categories : null}
             handleQuickSearchValueSelect={handleQuickSearchValueSelect}
           /> :
           (
             <>
               <Promo />
-              {projectData && <Categories categories={projectData.data.categories} />}
+              {projectData && <Categories categories={projectData.categories} />}
               <Goods
                 searchValue={searchValue}
                 visibleProducts={visibleProducts}

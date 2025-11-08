@@ -6,6 +6,13 @@
   height: calc((100vw - 14px) / 2);
 
   .swiper {
+    --swiper-pagination-color: #292928;
+    --swiper-pagination-bullet-size: 3px;
+    --swiper-pagination-bullet-width: 3px;
+    --swiper-pagination-bullet-horizontal-gap: 2px;
+    --swiper-pagination-bullet-inactive-color: rgba(29, 29, 28,     0.3);
+    --swiper-pagination-bullet-active-color: #292928;
+
     width: 100%;
     height: calc((100vw - 14px) / 2);
   }

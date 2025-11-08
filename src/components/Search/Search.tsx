@@ -1,10 +1,11 @@
+import type { ChangeEvent } from "react";
 import type Product from "../../types/Product";
 import styles from "./Search.module.scss";
 
 interface SearchProps {
   searchFocused: boolean,
   searchValue: string,
-  handleSearchInput: () => void,
+  handleSearchInput: (e: ChangeEvent<HTMLInputElement>) => void,
   handleSearchUnfocus: () => void,
   setSearchFocused: React.Dispatch<React.SetStateAction<boolean>>,
   setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>
@@ -28,7 +29,7 @@ export function Search({
             type="text"
             placeholder="Найти товары"
             onFocus={handleSearchUnfocus}
-            onInput={handleSearchInput}
+            onInput={(handleSearchInput)}
             value={searchValue}
           />
         </label>

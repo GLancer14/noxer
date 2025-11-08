@@ -13,14 +13,6 @@ export function PhotoSwiper({ productData }: { productData: Product }) {
       {(productData.images.length > 0) ? 
         <Swiper
           className={styles.swiper}
-          style={{
-            "--swiper-pagination-color": "#292928",
-            "--swiper-pagination-bullet-size": "3px",
-            "--swiper-pagination-bullet-width": "3px",
-            "--swiper-pagination-bullet-horizontal-gap": "2px",
-            "--swiper-pagination-bullet-inactive-color": "rgba(29, 29, 28,     0.3)",
-            "--swiper-pagination-bullet-active-color": "#292928",
-          }}
           initialSlide={0}
           pagination={{ clickable: true }}
           modules={[ Pagination ]}

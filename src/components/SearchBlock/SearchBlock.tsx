@@ -4,10 +4,36 @@ import noPhoto from "../../assets/no-photo.svg";
 import { useEffect, useState } from "react";
 import { searchProducts } from "../../api/searchProducts";
 import type Category from "../../types/Category";
+import type { ProductsDTO } from "../../types/ProductsDTO";
+
+const initialProductsData: ProductsDTO = {
+  filters: {
+    category_ids: null,
+    color_ids: null,
+    in_stock:  null,
+    mark_ids: null,
+    price: null,
+    search: null,
+    sort_by: "popularity",
+    sort_desc: false,
+    specifications: null,
+  },
+  pagination: {
+    current_page: 1,
+    has_next: false,
+    has_prev: false,
+    per_page: 20,
+    total_pages: 1,
+    total_products: 0,
+  },
+  products: [],
+  status: "ok",
+  total: 1918,
+}
 
 interface SearchBlockProps {
   searchValue: string;
-  categories: Category[];
+  categories: Category[] | null;
   handleQuickSearchValueSelect: (query: string) => void;
 }
 
@@ -17,11 +43,18 @@ export function SearchBlock({
   handleQuickSearchValueSelect
 }: SearchBlockProps) {
   const [ frequentRequests, setFrequentRequests ] = useState<Category[]>([]);
-  const [ quickSearchResult, setQuickSearchResult ] = useState(null);
+  const [ quickSearchResult, setQuickSearchResult ] = useState(initialProductsData);
 
-  const findProducts = async (searchValue: string, prevPage: number, page: number) => {
-    const loadedProducts = await searchProducts(searchValue, prevPage, page);
-    setQuickSearchResult(loadedProducts);
+  const findProducts = async (searchValue: string, perPage: number, page: number) => {
+    const loadedProducts = await searchProducts({
+      searchValue,
+      perPage,
+      page,
+    });
+
+    if (loadedProducts.status === "ok") {
+      setQuickSearchResult(loadedProducts);
+    }
   }
 
   useEffect(() => {
@@ -29,22 +62,25 @@ export function SearchBlock({
   }, [ searchValue ]);
 
   useEffect(() => {
-    const sortedCategories = categories.sort((categoryA, categoryB) => {
-      const categoryAImageURL = categoryA.Category_Image || categoryA.category_images?.[0]?.url;
-      const categoryBImageURL = categoryB.Category_Image || categoryB.category_images?.[0]?.url;
+    if (categories !== null) {
+      const sortedCategories = categories.sort((categoryA, categoryB) => {
+        const categoryAImageURL = categoryA.Category_Image || categoryA.category_images?.[0]?.url;
+        const categoryBImageURL = categoryB.Category_Image || categoryB.category_images?.[0]?.url;
 
-      if (categoryAImageURL && categoryBImageURL) {
-        return categoryA.sort_order - categoryB.sort_order;
-      } else if (categoryAImageURL && !categoryBImageURL) {
-        return -1;
-      } else if (!categoryAImageURL && categoryBImageURL) {
-        return 1;
-      } else {
-        return categoryA.sort_order - categoryB.sort_order;
-      }
-    }).slice(0, 10);
+        if (categoryAImageURL && categoryBImageURL) {
+          return categoryA.sort_order - categoryB.sort_order;
+        } else if (categoryAImageURL && !categoryBImageURL) {
+          return -1;
+        } else if (!categoryAImageURL && categoryBImageURL) {
+          return 1;
+        } else {
+          return categoryA.sort_order - categoryB.sort_order;
+        }
+      }).slice(0, 10);
 
-    setFrequentRequests(sortedCategories);
+      setFrequentRequests(sortedCategories);
+    }
+    
   }, []);
 
   if (searchValue === "") {
@@ -73,9 +109,9 @@ export function SearchBlock({
     return (
       <div className={styles.wrapper}>
         {
-          (quickSearchResult === null || quickSearchResult?.data.total === 0) ?
+          (quickSearchResult === null || quickSearchResult?.total === 0 || !quickSearchResult.products) ?
             <div className={styles.noResults}>Результаты не найдены</div> :
-            quickSearchResult.data.products.map(product => {
+            quickSearchResult.products.map(product => {
               return (
                 <div className={styles.cardSearch} key={product.id}>
                   <div className={styles.imageWrp}>
@@ -84,9 +120,9 @@ export function SearchBlock({
                         <img
                           className={styles.image}
                           src={
-                            product?.images.find(image => image.MainImage).Image_URL || noPhoto
+                            product.images.find(image => image.MainImage)?.Image_URL || noPhoto
                           }
-                          alt={product?.title}
+                          alt={product?.name}
                         />
                       ) : (
                         <img
