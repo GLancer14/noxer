@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const connection = axios.create({
-  baseURL: "https://noxer-test.ru",
+  baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     "Content-Type": "application/json",
   },
