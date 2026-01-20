@@ -58,7 +58,7 @@ export function SearchBlock({
   }
 
   useEffect(() => {
-    findProducts(searchValue, 1, 1);
+    findProducts(searchValue, 6, 0);
   }, [ searchValue ]);
 
   useEffect(() => {
