@@ -1,6 +1,6 @@
 import connection from ".";
 import request from "axios";
-import type { ProductsDTO } from "../types/ProductsDTO";
+import type { ProductsDTO } from "../types/Product";
 import type { ErrorResponse } from "../types/ErrorResponse";
 
 export interface ProductsSearchParams {

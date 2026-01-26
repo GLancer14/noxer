@@ -1,4 +1,8 @@
-import type CategoryImage from "./CategoryImage";
+export default interface CategoryImage {
+  name: string;
+  type: string;
+  url: string;
+}
 
 export default interface Category {
   Category_ID: number;

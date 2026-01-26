@@ -4,7 +4,7 @@ import noPhoto from "../../assets/no-photo.svg";
 import { useEffect, useState } from "react";
 import { searchProducts } from "../../api/searchProducts";
 import type Category from "../../types/Category";
-import type { ProductsDTO } from "../../types/ProductsDTO";
+import type { ProductsDTO } from "../../types/Product";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import { updateSearchValue } from "../../store/reducers/searchSlice";
 
