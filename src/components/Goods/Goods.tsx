@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import { ProductCard } from "../ProductCard/ProductCard";
 import styles from "./Goods.module.scss";
 import { searchProducts } from "../../api/searchProducts";
-import type Product from "../../types/Product";
-import { useAppSelector } from "../../hooks/reduxHook";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { addProducts, updateProducts } from "../../store/reducers/productsSlice";
 
-interface GoodsProps {
-  visibleProducts: Product[];
-  setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-}
-
-export function Goods({ visibleProducts, setVisibleProducts }: GoodsProps) {
+export function Goods() {
+  const dispatch = useAppDispatch();
+  const productsState = useAppSelector(state => state.productsReducer);
   const searchState = useAppSelector(state => state.searchReducer);
   const [ loading, setLoading ] = useState(false);
   const [ page, setPage ] = useState(1);
@@ -36,10 +33,10 @@ export function Goods({ visibleProducts, setVisibleProducts }: GoodsProps) {
 
     if (loadedProducts.status === "ok") {
       if (isInitialLoad) {
-        setVisibleProducts(loadedProducts.products);
+        dispatch(updateProducts(loadedProducts.products));
         setPage(2);
       } else {
-        setVisibleProducts(prevProducts => [ ...prevProducts, ...loadedProducts.products ]);
+        dispatch(addProducts(loadedProducts.products));
         setPage(previosPage => previosPage + 1);
       }
 
@@ -56,7 +53,6 @@ export function Goods({ visibleProducts, setVisibleProducts }: GoodsProps) {
     if (!initialLoadDone) {
       fetchProducts(true);
     }
-
   }, [initialLoadDone]);
 
   useEffect(() => {
@@ -74,7 +70,7 @@ export function Goods({ visibleProducts, setVisibleProducts }: GoodsProps) {
   return (
     <>
       <div className={styles.list}>
-        {visibleProducts.map((visibleProduct) => {
+        {productsState.map((visibleProduct) => {
           return (
             <ProductCard key={visibleProduct.id} productData={visibleProduct} />
           );

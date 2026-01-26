@@ -1,15 +1,9 @@
-import type Product from "../../types/Product";
 import styles from "./Search.module.scss";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import { updateFocusedState, updateSearchValue } from "../../store/reducers/searchSlice";
+import { resetProducts } from "../../store/reducers/productsSlice";
 
-interface SearchProps {
-  setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>
-}
-
-export function Search({
-  setVisibleProducts
-}: SearchProps) {
+export function Search() {
   const dispatch = useAppDispatch();
   const searchState = useAppSelector(state => state.searchReducer);
 
@@ -33,7 +27,7 @@ export function Search({
           <button
             className={styles.goBtn}
             onClick={() => {
-              setVisibleProducts([]);
+              dispatch(resetProducts());
               dispatch(updateFocusedState(false));
             }}
             type="button"

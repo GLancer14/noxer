@@ -1,15 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { searchSlice, updateFocusedState, updateSearchValue } from "../../store/reducers/searchSlice";
-import type Product from "../../types/Product";
+import { resetProducts } from "../../store/reducers/productsSlice";
+import { updateFocusedState, updateSearchValue } from "../../store/reducers/searchSlice";
 import styles from "./MenuNav.module.scss";
 
-interface MenuNavProps {
-  // searchFocused: boolean;
-  // handleBackBtnClick: () => void;
-  setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-}
-
-export function MenuNav({ setVisibleProducts }: MenuNavProps) {
+export function MenuNav() {
   const dispatch = useAppDispatch();
   const searchState = useAppSelector(state => state.searchReducer);
   
@@ -20,8 +14,7 @@ export function MenuNav({ setVisibleProducts }: MenuNavProps) {
       onClick={() => {
         dispatch(updateSearchValue(""));
         dispatch(updateFocusedState(false));
-        // handleBackBtnClick();
-        setVisibleProducts([]);
+        dispatch(resetProducts());
       }}
     >
       Назад

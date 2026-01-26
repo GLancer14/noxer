@@ -8,13 +8,11 @@ import { Promo } from './components/Promo/Promo'
 import { Goods } from './components/Goods/Goods'
 import { getProjectData } from './api/projectData'
 import { SearchBlock } from './components/SearchBlock/SearchBlock';
-import type Product from './types/Product';
 import type { ProjectDataDTO } from './types/ProjectDataDTO';
 import {  useAppSelector } from './hooks/reduxHook';
 
 function App() {
   const [ projectData, setProjectData ] = useState<ProjectDataDTO | null>(null);
-  const [ visibleProducts, setVisibleProducts ] = useState<Product[]>([]);
   const searchState = useAppSelector(state => state.searchReducer);
 
   useEffect(() => {
@@ -34,12 +32,8 @@ function App() {
 
   return (
     <>
-      <MenuNav
-        setVisibleProducts={setVisibleProducts}
-      />
-      <Search
-          setVisibleProducts={setVisibleProducts}
-        />
+      <MenuNav />
+      <Search />
       <main className="main">
         {searchState.isFocused ?
           <SearchBlock
@@ -49,10 +43,7 @@ function App() {
             <>
               <Promo />
               {projectData && <Categories categories={projectData.categories} />}
-              <Goods
-                visibleProducts={visibleProducts}
-                setVisibleProducts={setVisibleProducts}
-              />
+              <Goods />
             </>
           )}
       </main>
