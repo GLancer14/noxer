@@ -24,7 +24,7 @@ export function MenuNav({ searchFocused, handleBackBtnClick, setVisibleProducts 
     <>
       <header className={styles.wrp}>
         {searchFocused ? closeBtn : backBtn}
-        <button className={styles.tg}>наш tg-канал</button>
+        <a className={styles.tg} href="https://t.me/telegram">наш tg-канал</a>
         <button className={styles.more}></button>
       </header>
     </>

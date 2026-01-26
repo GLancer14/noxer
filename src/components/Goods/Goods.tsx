@@ -27,7 +27,7 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts }: Good
     }
 
     setLoading(true);
-    const currentPage = isInitialLoad ? 1 : page;
+    const currentPage = isInitialLoad ? 0 : page;
     const loadedProducts = await searchProducts({
       searchValue: searchValue,
       perPage: 6,
