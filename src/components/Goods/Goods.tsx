@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-// import { getProducts } from "../../api/getProducts";
 import { ProductCard } from "../ProductCard/ProductCard";
 import styles from "./Goods.module.scss";
 import { searchProducts } from "../../api/searchProducts";
 import type Product from "../../types/Product";
+import { useAppSelector } from "../../hooks/reduxHook";
 
 interface GoodsProps {
-  searchValue: string;
   visibleProducts: Product[];
   setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
-export function Goods({ searchValue, visibleProducts, setVisibleProducts }: GoodsProps) {
+export function Goods({ visibleProducts, setVisibleProducts }: GoodsProps) {
+  const searchState = useAppSelector(state => state.searchReducer);
   const [ loading, setLoading ] = useState(false);
   const [ page, setPage ] = useState(1);
   const [ totalPages, setTotalPages ] = useState(1);
@@ -29,7 +29,7 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts }: Good
     setLoading(true);
     const currentPage = isInitialLoad ? 0 : page;
     const loadedProducts = await searchProducts({
-      searchValue: searchValue,
+      searchValue: searchState.value,
       perPage: 6,
       page: currentPage,
     });
@@ -63,8 +63,7 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts }: Good
     setPage(1);
     setTotalPages(1);
     setInitialLoadDone(false);
-
-  }, [searchValue]);
+  }, [searchState.value]);
 
   const handleLoadMore = () => {
     if (!loading && page <= totalPages) {
@@ -94,25 +93,6 @@ export function Goods({ searchValue, visibleProducts, setVisibleProducts }: Good
             </button>
           </div>))
         }
-
-        {/* {loading ?
-          (<div className={styles.loading} ref={loaderRef}>
-            {loading && "Загрузка..."}
-          </div>) : 
-          (<div className={styles.more}>
-            <button
-              className={styles.btn}
-              disabled={loading}
-              onClick={() => {
-                if (!loading) {
-                  fetchProducts();
-                }
-              }}
-            >
-              Показать ещё
-            </button>
-          </div>)
-        } */}
       </div>
     </>
   );

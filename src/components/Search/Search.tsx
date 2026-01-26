@@ -1,24 +1,17 @@
-import type { ChangeEvent } from "react";
 import type Product from "../../types/Product";
 import styles from "./Search.module.scss";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { updateFocusedState, updateSearchValue } from "../../store/reducers/searchSlice";
 
 interface SearchProps {
-  searchFocused: boolean,
-  searchValue: string,
-  handleSearchInput: (e: ChangeEvent<HTMLInputElement>) => void,
-  handleSearchUnfocus: () => void,
-  setSearchFocused: React.Dispatch<React.SetStateAction<boolean>>,
   setVisibleProducts: React.Dispatch<React.SetStateAction<Product[]>>
 }
 
 export function Search({
-  searchFocused,
-  searchValue,
-  handleSearchInput,
-  handleSearchUnfocus,
-  setSearchFocused,
   setVisibleProducts
 }: SearchProps) {
+  const dispatch = useAppDispatch();
+  const searchState = useAppSelector(state => state.searchReducer);
 
   return (
     <>
@@ -28,18 +21,20 @@ export function Search({
             className={styles.input}
             type="text"
             placeholder="Найти товары"
-            onFocus={handleSearchUnfocus}
-            onInput={(handleSearchInput)}
-            value={searchValue}
+            onFocus={() => dispatch(updateFocusedState(true))}
+            onInput={e => {
+              dispatch(updateSearchValue(e.currentTarget.value));
+            }}
+            value={searchState.value}
           />
         </label>
         
-        {(searchValue !== "" && !searchFocused) && (
+        {(searchState.value !== "" && searchState.isFocused) && (
           <button
             className={styles.goBtn}
             onClick={() => {
               setVisibleProducts([]);
-              setSearchFocused(true);
+              dispatch(updateFocusedState(false));
             }}
             type="button"
           >

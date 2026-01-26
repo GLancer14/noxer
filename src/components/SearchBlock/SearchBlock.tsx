@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { searchProducts } from "../../api/searchProducts";
 import type Category from "../../types/Category";
 import type { ProductsDTO } from "../../types/ProductsDTO";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { updateSearchValue } from "../../store/reducers/searchSlice";
 
 const initialProductsData: ProductsDTO = {
   filters: {
@@ -32,18 +34,16 @@ const initialProductsData: ProductsDTO = {
 }
 
 interface SearchBlockProps {
-  searchValue: string;
   categories: Category[] | null;
-  handleQuickSearchValueSelect: (query: string) => void;
 }
 
 export function SearchBlock({
-  searchValue,
   categories,
-  handleQuickSearchValueSelect
 }: SearchBlockProps) {
+  const dispatch = useAppDispatch();
   const [ frequentRequests, setFrequentRequests ] = useState<Category[]>([]);
   const [ quickSearchResult, setQuickSearchResult ] = useState(initialProductsData);
+  const searchState = useAppSelector(state => state.searchReducer);
 
   const findProducts = async (searchValue: string, perPage: number, page: number) => {
     const loadedProducts = await searchProducts({
@@ -58,8 +58,8 @@ export function SearchBlock({
   }
 
   useEffect(() => {
-    findProducts(searchValue, 6, 0);
-  }, [ searchValue ]);
+    findProducts(searchState.value, 6, 0);
+  }, [searchState.value]);
 
   useEffect(() => {
     if (categories !== null) {
@@ -83,7 +83,7 @@ export function SearchBlock({
     
   }, []);
 
-  if (searchValue === "") {
+  if (searchState.value === "") {
     return (
       <div className={styles.wrapper}>
         <h3 className={styles.header}>Часто ищут</h3>
@@ -92,7 +92,7 @@ export function SearchBlock({
             <div
               className={styles.request}
               onClick={() => {
-                handleQuickSearchValueSelect(category.Category_Name);
+                dispatch(updateSearchValue(category.Category_Name.toLowerCase()));
               }}
               key={category.Category_ID}
             >
