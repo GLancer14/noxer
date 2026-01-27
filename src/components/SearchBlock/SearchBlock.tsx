@@ -33,15 +33,9 @@ const initialProductsData: ProductsDTO = {
   total: 1918,
 }
 
-interface SearchBlockProps {
-  categories: Category[] | null;
-}
-
-export function SearchBlock({
-  categories,
-}: SearchBlockProps) {
+export function SearchBlock() {
   const dispatch = useAppDispatch();
-  const [ frequentRequests, setFrequentRequests ] = useState<Category[]>([]);
+  const [ frequentRequests, setFrequentRequests ] = useState<string[]>([]);
   const [ quickSearchResult, setQuickSearchResult ] = useState(initialProductsData);
   const searchState = useAppSelector(state => state.searchReducer);
 
@@ -62,24 +56,26 @@ export function SearchBlock({
   }, [searchState.value]);
 
   useEffect(() => {
-    if (categories !== null) {
-      const sortedCategories = categories.sort((categoryA, categoryB) => {
-        const categoryAImageURL = categoryA.Category_Image || categoryA.category_images?.[0]?.url;
-        const categoryBImageURL = categoryB.Category_Image || categoryB.category_images?.[0]?.url;
+    // const sortedCategories = ["блюдо", "астра", "бан", "ангел", "ботинки"];
+    // if (categories !== null) {
+    //   const sortedCategories = categories.sort((categoryA, categoryB) => {
+    //     const categoryAImageURL = categoryA.Category_Image || categoryA.category_images?.[0]?.url;
+    //     const categoryBImageURL = categoryB.Category_Image || categoryB.category_images?.[0]?.url;
 
-        if (categoryAImageURL && categoryBImageURL) {
-          return categoryA.sort_order - categoryB.sort_order;
-        } else if (categoryAImageURL && !categoryBImageURL) {
-          return -1;
-        } else if (!categoryAImageURL && categoryBImageURL) {
-          return 1;
-        } else {
-          return categoryA.sort_order - categoryB.sort_order;
-        }
-      }).slice(0, 10);
+    //     if (categoryAImageURL && categoryBImageURL) {
+    //       return categoryA.sort_order - categoryB.sort_order;
+    //     } else if (categoryAImageURL && !categoryBImageURL) {
+    //       return -1;
+    //     } else if (!categoryAImageURL && categoryBImageURL) {
+    //       return 1;
+    //     } else {
+    //       return categoryA.sort_order - categoryB.sort_order;
+    //     }
+    //   }).slice(0, 10);
 
-      setFrequentRequests(sortedCategories);
-    }
+      // setFrequentRequests(sortedCategories);
+      setFrequentRequests(["блюдо", "астра", "бан", "ангел", "ботинки", "антиквар"]);
+    // }
     
   }, []);
 
@@ -92,13 +88,13 @@ export function SearchBlock({
             <div
               className={styles.request}
               onClick={() => {
-                dispatch(updateSearchValue(category.Category_Name.toLowerCase()));
+                dispatch(updateSearchValue(category.toLowerCase()));
               }}
-              key={category.Category_ID}
+              key={category}
             >
               <img className={styles.searchIcon} src={magnifier} alt="icon" />
               <span className={styles.requestName}>
-                {category.Category_Name}
+                {category}
               </span>
             </div>
           );

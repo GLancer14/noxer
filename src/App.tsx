@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react'
 import './assets/scss/index.scss';
-import { MenuNav } from './components/MenuNav/MenuNav'
-import { Footer } from './components/Footer/Footer'
-import { Search } from './components/Search/Search'
 import { Categories } from './components/Categories/Categories'
 import { Promo } from './components/Promo/Promo'
 import { Goods } from './components/Goods/Goods'
 import { getProjectData } from './api/projectData'
 import { SearchBlock } from './components/SearchBlock/SearchBlock';
 import type { ProjectDataDTO } from './types/ProjectDataDTO';
-import {  useAppSelector } from './hooks/reduxHook';
+import { Route, Routes } from 'react-router';
+import { MainLayout } from './components/MainLayout/MainLayout';
 
 function App() {
   const [ projectData, setProjectData ] = useState<ProjectDataDTO | null>(null);
-  const searchState = useAppSelector(state => state.searchReducer);
 
   useEffect(() => {
     try {
@@ -31,24 +28,19 @@ function App() {
   }, []);
 
   return (
-    <>
-      <MenuNav />
-      <Search />
-      <main className="main">
-        {searchState.isFocused ?
-          <SearchBlock
-            categories={projectData ? projectData.categories : null}
-          /> :
-          (
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={
             <>
               <Promo />
               {projectData && <Categories categories={projectData.categories} />}
               <Goods />
             </>
-          )}
-      </main>
-      <Footer />
-    </>
+          }
+        />
+        <Route path="search" element={<SearchBlock />} />
+      </Route>
+    </Routes>
   )
 }
 
