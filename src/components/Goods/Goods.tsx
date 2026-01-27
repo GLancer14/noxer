@@ -34,7 +34,7 @@ export function Goods() {
     if (loadedProducts.status === "ok") {
       if (isInitialLoad) {
         dispatch(updateProducts(loadedProducts.products));
-        setPage(2);
+        setPage(1);
       } else {
         dispatch(addProducts(loadedProducts.products));
         setPage(previosPage => previosPage + 1);
@@ -65,7 +65,7 @@ export function Goods() {
     if (!loading && page <= totalPages) {
       fetchProducts(false);
     }
-  }; 
+  };
 
   return (
     <>
@@ -79,15 +79,16 @@ export function Goods() {
           (<div className={styles.loading}>
             Загрузка...
           </div>) : 
-          (page <= totalPages && (<div className={styles.more}>
-            <button
-              className={styles.btn}
-              disabled={loading}
-              onClick={handleLoadMore}
-            >
-              Показать ещё
-            </button>
-          </div>))
+          (page < totalPages 
+            && (<div className={styles.more}>
+              <button
+                className={styles.btn}
+                disabled={loading}
+                onClick={handleLoadMore}
+              >
+                Показать ещё
+              </button>
+            </div>))
         }
       </div>
     </>
