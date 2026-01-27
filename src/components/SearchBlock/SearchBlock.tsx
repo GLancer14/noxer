@@ -3,7 +3,6 @@ import magnifier from "../../assets/icons/magnifier.svg";
 import noPhoto from "../../assets/no-photo.svg";
 import { useEffect, useState } from "react";
 import { searchProducts } from "../../api/searchProducts";
-import type Category from "../../types/Category";
 import type { ProductsDTO } from "../../types/Product";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import { updateSearchValue } from "../../store/reducers/searchSlice";
@@ -56,27 +55,7 @@ export function SearchBlock() {
   }, [searchState.value]);
 
   useEffect(() => {
-    // const sortedCategories = ["блюдо", "астра", "бан", "ангел", "ботинки"];
-    // if (categories !== null) {
-    //   const sortedCategories = categories.sort((categoryA, categoryB) => {
-    //     const categoryAImageURL = categoryA.Category_Image || categoryA.category_images?.[0]?.url;
-    //     const categoryBImageURL = categoryB.Category_Image || categoryB.category_images?.[0]?.url;
-
-    //     if (categoryAImageURL && categoryBImageURL) {
-    //       return categoryA.sort_order - categoryB.sort_order;
-    //     } else if (categoryAImageURL && !categoryBImageURL) {
-    //       return -1;
-    //     } else if (!categoryAImageURL && categoryBImageURL) {
-    //       return 1;
-    //     } else {
-    //       return categoryA.sort_order - categoryB.sort_order;
-    //     }
-    //   }).slice(0, 10);
-
-      // setFrequentRequests(sortedCategories);
-      setFrequentRequests(["блюдо", "астра", "бан", "ангел", "ботинки", "антиквар"]);
-    // }
-    
+    setFrequentRequests(["блюдо", "астра", "бан", "ангел", "ботинки", "антиквар"]);
   }, []);
 
   if (searchState.value === "") {
@@ -105,7 +84,7 @@ export function SearchBlock() {
     return (
       <div className={styles.wrapper}>
         {
-          (quickSearchResult === null || quickSearchResult?.total === 0 || !quickSearchResult.products) ?
+          (quickSearchResult.products.length === 0) ?
             <div className={styles.noResults}>Результаты не найдены</div> :
             quickSearchResult.products.map(product => {
               return (

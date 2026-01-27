@@ -33,5 +33,4 @@ export interface ProjectDataDTO {
   };
   special_project_parameters_json: any;
   status: "ok";
-
 }
