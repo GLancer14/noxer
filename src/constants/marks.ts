@@ -1,4 +1,4 @@
-import type { Marks } from "../types/marks";
+import type { Marks } from "../types/Marks";
 
 const marks: Marks = {
   hot: {

@@ -42,7 +42,7 @@ export const projectDataSlice = createSlice({
   name: "projectData",
   initialState,
   reducers: {
-    setProjectData: (state, action: PayloadAction<ProjectDataDTO>) => {
+    setProjectData: (_, action: PayloadAction<ProjectDataDTO>) => {
       return action.payload;
     },
   }

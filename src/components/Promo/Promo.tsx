@@ -16,14 +16,6 @@ export function Promo() {
     <div className={styles.promo}>
       <Swiper
       className={styles.swiper}
-        // style={{
-        //   "--swiper-pagination-color": "white",
-        //   "--swiper-pagination-bullet-size": "3px",
-        //   "--swiper-pagination-bullet-width": "3px",
-        //   "--swiper-pagination-bullet-horizontal-gap": "2px",
-        //   "--swiper-pagination-bullet-inactive-color": "rgba(255, 255, 255, 0.3)",
-        //   "--swiper-pagination-bullet-active-color": "white",
-        // }}
         initialSlide={0}
         pagination={{ clickable: true }}
         modules={[Pagination]}
@@ -31,11 +23,13 @@ export function Promo() {
         {promoImages.map((promoImage, index) => {
           return (
             <SwiperSlide key={index}>
-              <img
-                src={promoImage}
-                alt="Специльное предложение"
-                className={styles.image}
-              />
+              <a href="#">
+                <img
+                  src={promoImage}
+                  alt="Специльное предложение"
+                  className={styles.image}
+                />
+              </a>
             </SwiperSlide>
           );
         })}

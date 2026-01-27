@@ -70,7 +70,7 @@ export function Goods() {
   return (
     <>
       <div className={styles.list}>
-        {productsState.map((visibleProduct) => {
+        {productsState.products.map((visibleProduct) => {
           return (
             <ProductCard key={visibleProduct.id} productData={visibleProduct} />
           );
